@@ -1,9 +1,10 @@
 package com.sula.sport4.data
 
-import androidx.compose.ui.graphics.painter.Painter
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Food(
-    val image : Int,
-    val foodName: String,
-    val foodDate: String
-)
+    val image: Int,
+    val foodName: String
+) : Parcelable

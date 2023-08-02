@@ -2,18 +2,21 @@ package com.sula.sport4.navigation
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sula.sport4.data.Food
 import com.sula.sport4.screens.StartPage.StartScreen
 import com.sula.sport4.screens.BannerScreen.BannerScreen
 import com.sula.sport4.screens.FakeScreen.FakeScreenViewModel
 import com.sula.sport4.screens.MainScreen.MainScreen
 import com.sula.sport4.screens.SplashScreen.SplashScreen
 import com.sula.sport4.screens.FakeScreen.FakeScreen
+import com.sula.sport4.screens.FakeScreen.FoodInfo
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -38,5 +41,13 @@ fun AppNavigation(viewModel: FakeScreenViewModel = hiltViewModel()) {
         composable(Screens.BannerScreen.name){
             BannerScreen()
         }
+        composable(Screens.FoodInfo.name){
+            val result =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Food>("food")
+            Log.d("FoodInfo Screen"," ${result?.foodName}")
+            Log.d("FoodInfo Screen", "${result?.image}")
+            FoodInfo(navController)
+        }
     }
+
 }

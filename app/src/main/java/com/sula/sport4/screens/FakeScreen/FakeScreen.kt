@@ -1,8 +1,10 @@
 package com.sula.sport4.screens.FakeScreen
 
 import android.util.Log
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,10 +35,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.sula.sport4.MainActivity
 import com.sula.sport4.R
+import com.sula.sport4.data.Food
+import com.sula.sport4.navigation.Screens
 import com.sula.sport4.ui.theme.DeepBlue
 import com.sula.sport4.ui.theme.IndigoДегайTheme
-import com.sula.sport4.ui.theme.Purple200
 
 @Composable
 fun FakeScreen(navController: NavController) {
@@ -43,7 +49,8 @@ fun FakeScreen(navController: NavController) {
         Log.d("Screen", "FakeScreen")
         Column {
             GreetingSection()
-            listColumn()
+            listColumn(navController)
+
         }
     }
 }
@@ -70,16 +77,18 @@ fun GreetingSection() {
 
 }
 
+
 @Composable
-fun listColumn() {
+fun listColumn(navController: NavController) {
     LazyColumn {
         item {
             OverlayRoundedBox(
                 shape = RoundedCornerShape(28.dp),
                 color = DeepBlue,
                 size = 160.dp,
-                overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                overlayIcon = R.drawable.img_2,
+                contentDescription = "eggs",
+                navController
             )
         }
         item {
@@ -88,7 +97,8 @@ fun listColumn() {
                 color = DeepBlue,
                 size = 160.dp,
                 overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                contentDescription = "Salmon",
+                navController
             )
         }
         item {
@@ -96,8 +106,9 @@ fun listColumn() {
                 shape = RoundedCornerShape(28.dp),
                 color = DeepBlue,
                 size = 160.dp,
-                overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                overlayIcon = R.drawable.img_3,
+                contentDescription = "Chicken breast",
+                navController
             )
         }
         item {
@@ -105,8 +116,9 @@ fun listColumn() {
                 shape = RoundedCornerShape(28.dp),
                 color = DeepBlue,
                 size = 160.dp,
-                overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                overlayIcon = R.drawable.img_4,
+                contentDescription = "Greek yogurt",
+                navController
             )
         }
         item {
@@ -114,8 +126,9 @@ fun listColumn() {
                 shape = RoundedCornerShape(28.dp),
                 color = DeepBlue,
                 size = 160.dp,
-                overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                overlayIcon = R.drawable.img_5,
+                contentDescription = "Tuna",
+                navController
             )
         }
         item {
@@ -123,29 +136,69 @@ fun listColumn() {
                 shape = RoundedCornerShape(28.dp),
                 color = DeepBlue,
                 size = 160.dp,
-                overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                overlayIcon = R.drawable.img_6,
+                contentDescription = "lean beef",
+                navController
             )
         }
         item {
             OverlayRoundedBox(
                 shape = RoundedCornerShape(28.dp),
-                color = DeepBlue,
                 size = 160.dp,
-                overlayIcon = R.drawable.img,
-                contentDescription = "title"
+                overlayIcon = R.drawable.img_7,
+                contentDescription = "Shrimp",
+                navController = navController
+            )
+        }
+        item {
+            OverlayRoundedBox(
+                shape = RoundedCornerShape(28.dp),
+                size = 160.dp,
+                overlayIcon = R.drawable.img_8,
+                contentDescription = "Soybeans",
+                navController = navController
+            )
+        }
+        item {
+            OverlayRoundedBox(
+                shape = RoundedCornerShape(28.dp),
+                size = 160.dp,
+                overlayIcon = R.drawable.img_9,
+                contentDescription = "Cottage cheese",
+                navController = navController
+            )
+        }
+        item {
+            OverlayRoundedBox(
+                shape = RoundedCornerShape(28.dp),
+                size = 160.dp,
+                overlayIcon = R.drawable.img_10,
+                contentDescription = "Turkey breast",
+                navController = navController
             )
         }
     }
 }
 
 @Composable
+fun closeApp() {
+    val currentOnBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    if (currentOnBackPressedDispatcher?.hasEnabledCallbacks() == true) {
+        currentOnBackPressedDispatcher.onBackPressed()
+    } else {
+        val context = LocalContext.current
+        (context as? MainActivity)?.finish()
+    }
+}
+
+@Composable
 fun OverlayRoundedBox(
     shape: Shape,
-    color: Color,
-    size: Dp,
+    color: Color = Color.Yellow,
+    size: Dp = 160.dp,
     overlayIcon: Int,
-    contentDescription: String
+    contentDescription: String = "food",
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -156,11 +209,20 @@ fun OverlayRoundedBox(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape)
+                .clip(RoundedCornerShape(28.dp))
                 .background(color)
-                .clip(shape)
+                .clip(RoundedCornerShape(28.dp))
                 .background(color)
                 .size(size)
+                .clickable
+                {
+                    val food = Food(overlayIcon, foodName = contentDescription)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = "food",
+                        value = food
+                    )
+                    navController.navigate(Screens.FoodInfo.name)
+                }
         ) {
             Image(
                 painter = painterResource(id = overlayIcon),
@@ -172,7 +234,7 @@ fun OverlayRoundedBox(
             Button(
                 onClick = { },
                 shape = RoundedCornerShape(20.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Purple200),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Yellow),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(end = 6.dp)
@@ -189,22 +251,23 @@ fun OverlayRoundedBox(
                     .align(Alignment.BottomCenter)
             ) {
                 Text(
-                    text = "Protein Milk Shake",
+                    text = contentDescription,
                     Modifier.padding(start = 25.dp),
                     fontSize = 16.sp,
-                    color = colorResource(id = R.color.black_gray)
+                    color = Color.White
                 )
                 Text(
                     text = "Monday, July 31",
                     Modifier.padding(start = 25.dp),
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
-                    color = colorResource(id = R.color.black_gray)
+                    color = Color.White
                 )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -212,7 +275,7 @@ fun GreetingPreview() {
     IndigoДегайTheme {
         Column {
             GreetingSection()
-            listColumn()
+            listColumn(navController = rememberNavController())
         }
     }
 }

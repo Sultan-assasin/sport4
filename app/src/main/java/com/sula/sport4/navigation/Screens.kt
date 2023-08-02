@@ -5,6 +5,7 @@ enum class Screens {
     FakeScreen,
     SplashScreen,
     StartScreen,
-    BannerScreen
+    BannerScreen,
+    FoodInfo
 
 }

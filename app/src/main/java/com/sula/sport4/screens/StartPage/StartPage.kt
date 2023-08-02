@@ -12,11 +12,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.sula.sport4.R
 import com.sula.sport4.navigation.Screens
+import com.sula.sport4.screens.FakeScreen.GreetingSection
+import com.sula.sport4.ui.theme.IndigoДегайTheme
 
 
 @Composable
@@ -24,33 +28,40 @@ fun StartScreen(navController: NavController) {
     Log.d("Screen", "StartScreen")
     Surface(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.hock), contentDescription = "",
+            painter = painterResource(id = R.drawable.image_preview), contentDescription = "",
             contentScale = ContentScale.Crop
         )
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
                 onClick = {
                     navController.navigate(Screens.FakeScreen.name)
                 }, colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Blue
+                    backgroundColor = Color.Yellow
 
                 ),
-                shape = RoundedCornerShape(15.dp)
+                shape = RoundedCornerShape(50.dp)
                 ,
                 modifier = Modifier
-                    .width(150.dp)
-                    .height(50.dp)
+                    .width(240.dp)
+                    .height(100.dp)
+                    .padding(bottom = 50.dp)
             ) {
                 Text(
-                    text = "Start Banner",
+                    text = "Next",
                     color = Color.White,
-                    fontSize = 15.sp,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewStartScreen(){
+    StartScreen(navController = rememberNavController())
 }

@@ -50,7 +50,7 @@ fun SplashScreen(navController: NavController, fakeScreenViewModel: FakeScreenVi
     }.value
 
     val hasNavigated = rememberSaveable { mutableStateOf(false) }
-
+//if link is empty and screen not going to another screen see firebase
     when(link) {
         is Resource.Success -> {
             if (!hasNavigated.value) {
@@ -82,7 +82,7 @@ fun SplashScreen(navController: NavController, fakeScreenViewModel: FakeScreenVi
         }
 
         else -> {
-
+            Log.d("SplashScreen","null")
         }
     }
 }
